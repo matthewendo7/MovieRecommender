@@ -166,7 +166,7 @@ shinyServer(function(input, output, session) {
         recom_result = res_$toplist
         
         num_movies <- as.numeric(res_$num_movies)
-        col_count = 5
+        col_count = min(num_movies,5)
         
         if(num_movies <= 5){
             num_rows <- 1    
