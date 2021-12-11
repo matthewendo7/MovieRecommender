@@ -44,11 +44,12 @@ shinyUI(
                 )
         ),
         tabItem("genre",
-   
-                selectInput("genre_input", "Select a Movie Genre:",
-                                                  c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
-                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
-                selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))
+                includeCSS("css/movies.css"),
+                fluidRow(selectInput("num_movies", "Number of Movies to Show:", c(3,5,10)))
+                #selectInput("genre_input", "Select a Movie Genre:",
+                #                                  c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
+                #                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
+                #selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))
               
                )
       )
