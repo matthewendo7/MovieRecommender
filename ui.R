@@ -52,8 +52,8 @@ shinyUI(
                             withBusyIndicatorUI(
                             column(2,actionButton("btn_show_genre_results", "Show Movie Results")),
                                 ),
-                            column(6,)
-                            
+                            column(6,),
+                            tableOutput("results2")
                             )
                 )
             )
