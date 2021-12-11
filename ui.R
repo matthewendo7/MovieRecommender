@@ -47,9 +47,7 @@ shinyUI(
                 h3("Annual Marketing Costs"),
                 actionButton("switchtab", "Look at Customer Retention"),
                 selectInput("state", "Choose a state:",
-                        list(`East Coast` = list("NY", "NJ", "CT"),
-                             `West Coast` = list("WA", "OR", "CA"),
-                             `Midwest` = list("MN", "WI", "IA"))
+                        list("NY", "NJ", "CT","WA", "OR", "CA","MN", "WI", "IA")
                       ),
                
                
