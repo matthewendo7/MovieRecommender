@@ -46,8 +46,9 @@ shinyUI(
         tabItem("genre",
                 column(2,selectInput("genre_input", "Select a Movie Genre:",
                                                   c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
-                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western")))
-               
+                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
+                column(2,selectInput("num_movies", "Number of Movies to Show:", c(3,5,10)))
+              
                )
       )
     )
