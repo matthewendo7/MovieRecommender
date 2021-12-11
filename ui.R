@@ -55,7 +55,7 @@ shinyUI(
                                 ),
                             column(6,),
                             
-                            )
+                            ),
                         fluidRow(
                             tableOutput("results2")
                             )
