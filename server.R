@@ -115,6 +115,8 @@ shinyServer(function(input, output, session) {
             # get the user's rating data
             user_genre <-  value_list$genre_input
             user_num_movies <- value_list$num_movies
+            data = read.csv("data/movies_for_sys1.csv")
+            print(nrow(data))
             res = list('a' = user_genre,'b' = user_num_movies)
         }) # still busy
         
