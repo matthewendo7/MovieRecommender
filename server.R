@@ -103,21 +103,18 @@ shinyServer(function(input, output, session) {
     }) # clicked on button
     
     
-    observeEvent(input$btn_show_genre_results, {
-    session$sendCustomMessage(type = 'testmessage',
-      message = 'Thank you for clicking')
-    })
-    
+   
     
     # Calculate recommendations when the sbumbutton is clicked: System I
     df2 <- eventReactive(input$btn_show_genre_results, {
         withBusyIndicatorServer("btn_show_genre_results", { # showing the busy indicator
            
-                       
+            value_list <- reactiveValuesToList(input)
+            print(value_list)
             # get the user's rating data
-            user_genre <-  input$genre_input$valtext
-            user_num_movies <- input$num_movies$text
-            res = list('a' = user_genre,'b' = user_num_movies)
+            #user_genre <-  input$genre_input$valtext
+            #user_num_movies <- input$num_movies$text
+            #res = list('a' = user_genre,'b' = user_num_movies)
         }) # still busy
         
     }) # clicked on button
