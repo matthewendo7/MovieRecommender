@@ -163,7 +163,7 @@ shinyServer(function(input, output, session) {
         
         
         
-        num_movies <- user_num_movies
+        num_movies <- 5
         
         #if(num_movies <= 5){
             num_rows <- 1    
