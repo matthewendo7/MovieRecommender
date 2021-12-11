@@ -54,7 +54,10 @@ ratingmat <- ratingmat[, unique(summary(ratingmat)$j)] # remove users with no ra
 dimnames(ratingmat) <- list(movie_id = as.character(1:3952), user_id = as.character(sort(unique(ratings$UserID))))
 #dimnames(ratingmat) <- list(MovieID = as.character(1:10000), UserID = as.character(sort(unique(ratings$UserID))))
 
+#SysI movie data summary
+sys1_movie_data = readRDS("data/movies_for_sys1.rdata")
 
+                          
 shinyServer(function(input, output, session) {
     
     # show the books to be rated
@@ -121,8 +124,8 @@ shinyServer(function(input, output, session) {
             # get the user's rating data
             user_genre <-  value_list$genre_input
             user_num_movies <- value_list$num_movies
-            data = read.csv("data/movies_for_sys1.csv")
-            topmovies = top_n_most_popular(data, user_genre,user_num_movies)
+            
+            topmovies = top_n_most_popular(sys1_movie_data, user_genre,user_num_movies)
             return(list(toplist = topmovies,num_movies = user_num_movies))
         }) # still busy
         
