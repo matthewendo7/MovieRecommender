@@ -15,7 +15,7 @@ shinyUI(
         dashboardSidebar(
             sidebarMenu(
                 menuItem("Movie Recommend", tabName = "movieRecommend"),
-                menuItem("Top Movies by Genre", tabName = "genre")
+                menuItem("Popular Movies by Genre", tabName = "genre")
             )
         ),
         dashboardBody(
