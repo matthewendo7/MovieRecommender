@@ -46,7 +46,7 @@ shinyUI(
         tabItem(tabName = "genre",
                 h3("Annual Marketing Costs"),
                 actionButton("switchtab", "Look at Customer Retention"),
-                selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))
+                actionButton("switchtab2", "Look at Customer Retention2"),
                
                
                
