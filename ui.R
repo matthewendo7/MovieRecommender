@@ -45,6 +45,7 @@ shinyUI(
         ),
         tabItem("genre",
                 fluidRow(
+                  useShinyjs(),
                 column(2,selectInput("genre_input", "Select a Movie Genre:",
                                                   c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
