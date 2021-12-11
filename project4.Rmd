@@ -258,9 +258,19 @@ top_n_highest_rated(movie_n_rating, "Crime",5)
 
 It is clear that our approach return the movies with the highest average rating for the given genre
 
-## System II
+## System II - Collaborative Filtering
 
+Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? Here we look at two different collaborative filtering methods - user based collaborative filtering (UBCF), and item based collaborative filtering (IBCF).
 
+In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.  UBCF and IBCF take different approaches using this user entered information to make a decision about what movies to recommend to the current user.
+
+### Approach 1
+
+The system we implemented uses UBCF.  UBCF answers the question of whether a user will like a specific movie or not by comparing the current user to other users in the system, and evaluating what those users prefer.  In this case, we have the reviews for thousands of users. When the current users rates movies, the similarity of the current user to other users in the dataset can be measured. The recommender system can then recommend the top rated movies of similar users.
+
+### Approach 2
+
+An alternative approach is IBCF.  
 
 
 
