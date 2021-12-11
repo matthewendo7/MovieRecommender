@@ -44,10 +44,8 @@ shinyUI(
                 )
         ),
         tabItem(tabName = "genre",
-               h2("Widgets tab content"),
-                withBusyIndicatorUI(
-               selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))
-                  )
+                h3("Annual Marketing Costs"), 
+            actionButton("switchtab", "Look at Customer Retention"))
         )
       )
     )
