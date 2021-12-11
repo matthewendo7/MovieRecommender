@@ -43,7 +43,9 @@ shinyUI(
                   )
                 )
         ),
-        tabItem("genre")
+        tabItem("genre"
+               
+               )
       )
     )
   )
