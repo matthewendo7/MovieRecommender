@@ -120,7 +120,6 @@ shinyServer(function(input, output, session) {
            
             value_list <- reactiveValuesToList(input)
             
-            #print(value_list)
             # get the user's rating data
             user_genre <-  value_list$genre_input
             user_num_movies <- value_list$num_movies
@@ -165,7 +164,6 @@ shinyServer(function(input, output, session) {
          #user_num_movies <- value_list$num_movies
         
         res_ <- df2()
-        print(res_)
         recom_result = res_$toplist
         
         num_movies <- as.numeric(res_$num_movies)
