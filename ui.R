@@ -51,7 +51,7 @@ shinyUI(
                             column(2,selectInput("num_movies", "Number of Movies to Show:", list("Top 3","Top 5","Top 10"))),
                             column(2,style='padding: 20px 0;',
                             withBusyIndicatorUI(
-                            actionButton("btn_show_genre_results", "Show Movie Results1"))
+                            actionButton("btn_show_genre_results", "Show Movie Results"))
                                 ),
                             column(6,)
                             
