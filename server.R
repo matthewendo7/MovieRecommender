@@ -156,7 +156,7 @@ shinyServer(function(input, output, session) {
         genre_list <- df2()
         
         fluidRow(
-            p(genre_list$a)
+            p("hello")
             )
         
     }) # renderUI function
