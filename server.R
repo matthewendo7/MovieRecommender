@@ -123,8 +123,7 @@ shinyServer(function(input, output, session) {
             user_num_movies <- value_list$num_movies
             data = read.csv("data/movies_for_sys1.csv")
             topmovies = top_n_most_popular(data, user_genre,user_num_movies)
-            print(head(topmovies))
-            res = list('a' = user_genre,'b' = user_num_movies)
+            return(topmovies)
         }) # still busy
         
     }) # clicked on button
@@ -156,15 +155,26 @@ shinyServer(function(input, output, session) {
     }) # renderUI function
     
     
-        # display the recommendations
+    # display the recommendations for system1
     output$results2 <- renderUI({
-        num_rows <- 2
-        num_movies <- 5
-        genre_list <- df2()
+        num_rows <- 1
+        num_movies <- 3
+        recom_result <- df2()
         
-        fluidRow(
-            p("hello")
-            )
+        lapply(1:num_rows, function(i) {
+            list(fluidRow(lapply(1:num_movies, function(j) {
+                box(width = 2, status = "success", solidHeader = TRUE, title = paste0("Rank ", (i - 1) * num_movies + j),
+                    
+                    div(style = "text-align:center", 
+                        a(img(src = movies$image_url[recom_result$MovieID[(i - 1) * num_movies + j]], height = 150))
+                    ),
+                    div(style="text-align:center; font-size: 100%", 
+                        strong(movies$Title[recom_result$MovieID[(i - 1) * num_movies + j]])
+                    )
+                    
+                )        
+            }))) # columns
+        }) # rows
         
     }) # renderUI function
     
