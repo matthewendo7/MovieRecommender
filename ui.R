@@ -49,7 +49,7 @@ shinyUI(
                                                   c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
                             column(2,selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))),
-                            column(2,style='padding: 35px 0;',
+                            column(2,style='padding: 15px 0;',
                             withBusyIndicatorUI(
                             actionButton("btn_show_genre_results", "Show Movie Results"))
                                 ),
@@ -69,37 +69,3 @@ shinyUI(
 
 
 
-
-
-
-# shinyUI(
-#     dashboardPage(
-#         skin = "blue",
-#         dashboardHeader(title = "Movie Recommender"),
-#         
-#         dashboardSidebar(),
-#         
-#         dashboardBody(includeCSS("css/movies.css"),
-#                       fluidRow(
-#                           box(width = 12, title = "Step 1: Rate as many movies as possible", status = "info", solidHeader = TRUE, collapsible = TRUE,
-#                               div(class = "rateitems",
-#                                   uiOutput('ratings')
-#                               )
-#                           )
-#                       ),
-#                       fluidRow(
-#                           useShinyjs(),
-#                           box(
-#                               width = 12, status = "info", solidHeader = TRUE,
-#                               title = "Step 2: Discover movies you might like",
-#                               br(),
-#                               withBusyIndicatorUI(
-#                                   actionButton("btn", "Click here to get your recommendations", class = "btn-warning")
-#                               ),
-#                               br(),
-#                               tableOutput("results")
-#                           )
-#                       )
-#         )
-#     )
-# ) 
