@@ -165,12 +165,12 @@ shinyServer(function(input, output, session) {
         
         num_movies <- min(user_num_movies,5)
         
-        if(num_movies <= 5){
+        #if(num_movies <= 5){
             num_rows <- 1    
-        }else if(num_movies == 10){
-            num_rows <- 2
+        #}else if(num_movies == 10){
+        #    num_rows <- 2
             
-        }
+        #}
         
         
         recom_result <- df2()
