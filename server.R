@@ -126,7 +126,18 @@ shinyServer(function(input, output, session) {
             
             # get the user's rating data
             user_genre <-  value_list$genre_input
-            user_num_movies <- as.numeric(value_list$num_movies)
+            user_num_movies_str <- value_list$num_movies
+            
+            if(user_num_movies_str == "Top 3"){
+               user_num_movies = 3
+            }else if (user_num_movies_str == "Top 5"){
+               user_num_movies = 5
+            }else if(user_num_movies_str == "Top 10"){
+               user_num_movies = 10
+            }
+            
+           
+            
             #print(user_genre)
             #print(user_num_movies)
             topmovies = top_n_most_popular(sys1_movie_data, user_genre,user_num_movies)
