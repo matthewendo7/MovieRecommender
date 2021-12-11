@@ -162,6 +162,7 @@ shinyServer(function(input, output, session) {
          #user_num_movies <- value_list$num_movies
         
         res_ <- df2()
+        print(res_)
         recom_result = res_$toplist
         
         num_movies <- res_$num_movies
