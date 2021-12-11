@@ -21,6 +21,12 @@ get_user_ratings = function(value_list) {
                                  x = dat$Rating, 
                                  dims = c(nrow(ratingmat), 1))
 }
+                     
+top_n_most_popular <- function(movie_rating_df, genre, n = 5){
+  s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #alteast 100 ratings
+  s$Genre = genre
+  return(s[order(-s$rating_count),][1:n,c("Title","MovieID","Genre","rating_count")])
+}
 
 # read in data
 myurl = "https://liangfgithub.github.io/MovieData/"
@@ -116,7 +122,8 @@ shinyServer(function(input, output, session) {
             user_genre <-  value_list$genre_input
             user_num_movies <- value_list$num_movies
             data = read.csv("data/movies_for_sys1.csv")
-            print(nrow(data))
+            topmovies = top_n_most_popular(data, user_genre,user_num_movies)
+            print(head(topmovies))
             res = list('a' = user_genre,'b' = user_num_movies)
         }) # still busy
         
