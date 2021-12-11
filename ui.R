@@ -44,7 +44,8 @@ shinyUI(
                 )
         ),
         tabItem(tabName = "genre",
-               h2("Widgets tab content")
+               h2("Widgets tab content"),
+               selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))
         )
       )
     )
