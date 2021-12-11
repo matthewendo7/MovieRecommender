@@ -157,8 +157,22 @@ shinyServer(function(input, output, session) {
     
     # display the recommendations for system1
     output$results2 <- renderUI({
-        num_rows <- 1
-        num_movies <- 3
+        
+         value_list <- reactiveValuesToList(input)
+         user_num_movies <- value_list$num_movies
+        
+        
+        
+        num_movies <- min(user_num_movies,5)
+        
+        if(num_movies <= 5){
+            num_rows <- 1    
+        }else if(num_movies == 10){
+            num_rows <- 2
+            
+        }
+        
+        
         recom_result <- df2()
         
         lapply(1:num_rows, function(i) {
