@@ -111,15 +111,13 @@ shinyServer(function(input, output, session) {
             # get the user's rating data
             user_genre <- genre_input$valtext
             user_num_movies <- num_movies$text
-            print(user_genre)
-            print(user_num_movies)
-            
-            
-            
+            res = list('a' = user_genre,'b' = user_num_movies)
         }) # still busy
         
     }) # clicked on button
     
+
+      
     
     # display the recommendations
     output$results <- renderUI({
@@ -143,5 +141,20 @@ shinyServer(function(input, output, session) {
         }) # rows
         
     }) # renderUI function
+    
+    
+        # display the recommendations
+    output$results2 <- renderUI({
+        num_rows <- 2
+        num_movies <- 5
+        genre_list <- df2()
+        
+        fluidRow(
+            <p>genre_list$a</p>
+            )
+        
+    }) # renderUI function
+    
+    
     
 }) # server function
