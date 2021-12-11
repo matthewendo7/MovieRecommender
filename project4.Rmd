@@ -12,6 +12,12 @@ output:
 date: "12/10/2021"
 ---
 
+
+```{r}
+library(reshape2)
+library(recommenderlab)
+```
+
 ## Overview
 
 Movie recommendation is an interesting application of data science where a user is shown a list of movies that might interest him. This is widely used in video streaming platforms such as Netflix, Hulu, and Amazon Prime, where the user is shown movies under "You may also like" to help the user select a movie quicker than browsing through the entire catalog. In this report, we discuss multiple approaches for recommending movies. 
@@ -149,7 +155,7 @@ head(users)
 
 In System 1, we discuss potential approaches for recommending movies based on the user’s genre.  This approach is suitable for instances where the system cannot interact with the user to know what movies the user likes and only knows the preferred genre.
 
-### Approach 1
+### Approach 1 - Most popular movies
 
 Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. We will only show a movie if there are alteast 100, 4 and 5 ratings to ensure sufficient number of users have rated the movie
 
@@ -179,8 +185,12 @@ movie_n_rating = merge(movie_45_rating_count, movies_sub,  on = "MovieID")
 top_n_most_popular <- function(movie_rating_df, genre, n = 5){
   s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #alteast 100 ratings
   s$Genre = genre
-  return(s[order(-s$rating_count),][1:n,c("Title","Genre","rating_count")])
+  return(s[order(-s$rating_count),][1:n,c("Title","MovieID","Genre","rating_count")])
 }
+
+#write.csv(movie_n_rating,file = "/home/asiri/uiuc/psl/project4/movies_for_sys1.csv", row.names = FALSE)
+saveRDS(movie_n_rating,file = "/home/asiri/uiuc/psl/project4/movies_for_sys1.rdata")
+#readr
 ```
 
 Application of System I, approach 1. 
@@ -202,7 +212,7 @@ It is clear that our approach return the movies with the highest number of revie
 
 
 
-### Approach 2
+### Approach 2 - Highest Rated Movies
 
 Our approach 2 for System I considers showing movies with highest average rating for movies with atleast 100 reviews. 
 
@@ -258,20 +268,119 @@ top_n_highest_rated(movie_n_rating, "Crime",5)
 
 It is clear that our approach return the movies with the highest average rating for the given genre
 
-## System II - Collaborative Filtering
+For the Shiny application, we used the Approach 1 - the most popular movie approach.
+
+## System II
 
 Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? Here we look at two different collaborative filtering methods - user based collaborative filtering (UBCF), and item based collaborative filtering (IBCF).
 
 In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.  UBCF and IBCF take different approaches using this user entered information to make a decision about what movies to recommend to the current user.
 
-### Approach 1
+Here we consider two approaches
 
-The system we implemented uses UBCF.  UBCF answers the question of whether a user will like a specific movie or not by comparing the current user to other users in the system, and evaluating what those users prefer.  In this case, we have the reviews for thousands of users. When the current users rates movies, the similarity of the current user to other users in the dataset can be measured. The recommender system can then recommend the top rated movies of similar users.
-
-### Approach 2
-
-An alternative approach is IBCF.  
+- Item-Based Collaborative Filtering(IBCF)
+- User-Based Collaborative Filtering(UBCF)
 
 
+### Item-Based Collaborative Filtering(IBCF)
+
+In item-based collaborative filtering is a model-based approach which produces recommendations based on the relationship between items inferred from the rating matrix. The assumption behind this approach is that users will prefer items that are similar to other items they like.
+
+The model-building step consists of calculating a similarity matrix containing all item-to-item similarities using a given similarity measure. Pearson correlation and Cosine similarity are popular when it comes to similarity measures
+
+### User-Based Collaborative Filtering(UBCF)
+
+Some description on UBCF
+Some description on UBCF
+Some description on UBCF
+Some description on UBCF
 
 
+
+** Our ShinyApp uses UBCF to recommend movies based on the user input **
+
+
+
+The the following section we build two models, IBCF and UBCF to evaluate accuracy on 10 random train/test samples
+
+We will use the rating dataset, follows the steps mentioned in the `recommenderlab` documentation
+
+```{r}
+#dataset setup
+
+#creating a rating matrix
+rating_matrix = as.matrix(dcast(ratings, UserID ~ MovieID, value.var = "Rating"))
+
+#let's conver the matrix to the realRatingMatrix
+real_rating_matrix =  as(rating_matrix, "realRatingMatrix")
+```
+
+It is important to remove the rating bias for rating matrices. We use `normalize()` to achieve this.
+We will use Z-score normalization
+
+```{r}
+normalize = normalize(real_rating_matrix,method="Z-score")
+```
+
+In the following code segment, we setup IBCF and UBCF, and evaluate the prediction accuracy on 10 sample runs
+
+< give the defition of each para >
+
+```{r}
+#defining an evaluation scheme with 80%
+ibcf_rmse = rep(0,10)
+ubcf_rmse = rep(0,10)
+
+for(i in 1:10){
+  e <- evaluationScheme(real_rating_matrix[1:200], #JUST RUNNING A SAMPLE FOR NOW
+                        method="split", 
+                        train=0.8, 
+                        given=15, 
+                        goodRating=5,
+                        )
+  
+  #building a recommender
+  
+  #Building a IBCF Recommender
+  r1_ibcf <- Recommender(getData(e, "train"),
+                         method = "IBCF",
+                        param=list(normalize="Z-score",
+                                   method="cosine",
+                                   k = 30 #number of nearest neighbors
+                        )
+                         )
+  
+  #Building a UBCF Recommender
+  r2_ubcf <- Recommender(getData(e, "train"),
+                       method = "UBCF",
+                      param=list(normalize="Z-score",
+                                 method="cosine",
+                                 nn = 25, #number of nearest neighbors ??
+                                 weighted = TRUE
+                      )
+                       )
+  #Evaluating accuracy IBCF
+  pred_ibcf <- predict(r1_ibcf, getData(e, "known"), type="ratings")
+  ibcf_rmse[i] = calcPredictionAccuracy(pred_ibcf, getData(e, "unknown"))[["RMSE"]]
+  
+  #Evaluating accuracy UBCF
+  pred_ibcf <- predict(r2_ubcf, getData(e, "known"), type="ratings")
+  ubcf_rmse[i] = calcPredictionAccuracy(pred_ibcf, getData(e, "unknown"))[["RMSE"]]
+  
+}
+```
+
+```{r}
+ibcf_rmse
+```
+
+```{r}
+ubcf_rmse
+```
+
+
+Sources:
+
+- https://www.cs.carleton.edu/cs_comps/0607/recommend/recommender/itembased.html
+- https://www.r-bloggers.com/2015/11/item-based-collaborative-filtering-recommender-systems-in-r/
+- https://cran.r-project.org/web/packages/recommenderlab/vignettes/recommenderlab.pdf
