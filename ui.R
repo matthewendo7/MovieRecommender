@@ -50,7 +50,8 @@ shinyUI(
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
                             selectInput("genre_input2", "Select a Movie Genre:",
                                                   list("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
-                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western"))
+                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
+                            selectInput("num_movies_input", "Number of Movies to Show:", list("3","5","10"))
                
                
                )
