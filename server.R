@@ -104,7 +104,7 @@ shinyServer(function(input, output, session) {
             res <- predict_cf(rmat, prediction_indices, "ubcf", TRUE, cal_cos, 1000, FALSE, 2000, 1000)
             
             # sort, organize, and return the results
-            user_results <- sort(res[, 1], decreasing = TRUE)[1:20]
+            user_results <- sort(res[, 1], decreasing = TRUE)[1:10]
             user_predicted_ids <- as.numeric(names(user_results))
             recom_results <- data.table(Rank = 1:10, 
                                         MovieID = movies$MovieID[user_predicted_ids], 
@@ -158,6 +158,7 @@ shinyServer(function(input, output, session) {
         print(recom_result)
         lapply(1:num_rows, function(i) {
             list(fluidRow(lapply(1:num_movies, function(j) {
+                c_movie_id = which(movies$MovieID == recom_result$MovieID[(i - 1) * col_count + j])
                 box(width = 2, status = "success", solidHeader = TRUE, title = paste0("Rank ", (i - 1) * num_movies + j),
                     
                     div(style = "text-align:center", 
