@@ -53,7 +53,7 @@ shinyUI(
                             withBusyIndicatorUI(
                             actionButton("btn_show_genre_results", "Show Movie Results"))
                                 ),
-                            column(6,),
+                            column(6,)
                             
                             ),
                         fluidRow(
