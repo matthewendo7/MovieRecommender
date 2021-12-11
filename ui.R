@@ -7,7 +7,7 @@ library(ShinyRatingInput)
 library(shinyjs)
 
 source('functions/helpers.R')
-c = c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
+movie_genre_list = c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
 "Mystery","Romance","Sci-Fi","Thriller","War","Western")
 
 shinyUI(
