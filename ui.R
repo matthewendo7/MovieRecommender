@@ -56,10 +56,10 @@ shinyUI(
                             column(6,)
                             
                             ),
-                        fluidRow(
-                            column(12,style='padding:15px;',
+                        #fluidRow(
+                        #    column(12,style='padding:15px;',
                             #tableOutput("results2"))
-                            )
+                         #   )
                 )
             )
         )
