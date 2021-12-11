@@ -180,13 +180,13 @@ shinyServer(function(input, output, session) {
         
         lapply(1:num_rows, function(i) {
             list(fluidRow(lapply(1:col_count, function(j) {
-                box(width = 2, status = "success", solidHeader = TRUE, title = paste0("Rank ", (i - 1) * num_movies + j),
+                box(width = 2, status = "success", solidHeader = TRUE, title = paste0("Rank ", (i - 1) * col_count + j),
                     
                     div(style = "text-align:center", 
-                        a(img(src = movies$image_url[recom_result$MovieID[(i - 1) * num_movies + j]], height = 150))
+                        a(img(src = movies$image_url[recom_result$MovieID[(i - 1) * col_count + j]], height = 150))
                     ),
                     div(style="text-align:center; font-size: 100%", 
-                        strong(movies$Title[recom_result$MovieID[(i - 1) * num_movies + j]])
+                        strong(movies$Title[recom_result$MovieID[(i - 1) * col_count + j]])
                     )
                     
                 )        
