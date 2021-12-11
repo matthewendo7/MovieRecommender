@@ -372,8 +372,9 @@ for(i in 1:10){
   ibcf_rmse[i] = calcPredictionAccuracy(pred_ibcf, getData(e, "unknown"))[["RMSE"]]
   
   #Evaluating accuracy UBCF
-  pred_ibcf <- predict(r2_ubcf, getData(e, "known"), type="ratings")
-  ubcf_rmse[i] = calcPredictionAccuracy(ubcf_rmse, getData(e, "unknown"))[["RMSE"]]
+  pred_ubcf <- predict(r2_ubcf, getData(e, "known"), type="ratings")
+  ubcf_rmse[i] = calcPredictionAccuracy(pred_ubcf, getData(e, "unknown"))[["RMSE"]]
+  
   
 }
 ```
