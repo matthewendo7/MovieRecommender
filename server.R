@@ -166,6 +166,7 @@ shinyServer(function(input, output, session) {
         recom_result = res_$toplist
         
         num_movies <- as.numeric(res_$num_movies)
+        col_count = 5
         
         if(num_movies <= 5){
             num_rows <- 1    
@@ -178,7 +179,7 @@ shinyServer(function(input, output, session) {
         
         
         lapply(1:num_rows, function(i) {
-            list(fluidRow(lapply(1:num_movies, function(j) {
+            list(fluidRow(lapply(1:col_count, function(j) {
                 box(width = 2, status = "success", solidHeader = TRUE, title = paste0("Rank ", (i - 1) * num_movies + j),
                     
                     div(style = "text-align:center", 
