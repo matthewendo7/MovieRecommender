@@ -50,7 +50,7 @@ shinyUI(
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
                             #selectInput("num_movies_input", "1Number of Movies to Show:", list("3","5","10"))
                             selectInput("genre_input2", "Select a Movie Genre:",
-                                                  list("3","5","10"))
+                                                  list("A","B","C"))
                            
                
                
