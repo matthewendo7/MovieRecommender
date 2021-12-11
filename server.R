@@ -115,8 +115,8 @@ shinyServer(function(input, output, session) {
            
                        
             # get the user's rating data
-            user_genre <- genre_input$valtext
-            user_num_movies <- num_movies$text
+            user_genre <-  input$genre_input$valtext
+            user_num_movies <- input$num_movies$text
             res = list('a' = user_genre,'b' = user_num_movies)
         }) # still busy
         
