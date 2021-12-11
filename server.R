@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
             user_num_movies <- value_list$num_movies
             data = read.csv("data/movies_for_sys1.csv")
             topmovies = top_n_most_popular(data, user_genre,user_num_movies)
-            return(topmovies)
+            return(list(toplist = topmovies,num_movies = user_num_movies))
         }) # still busy
         
     }) # clicked on button
@@ -161,19 +161,20 @@ shinyServer(function(input, output, session) {
          #value_list <- reactiveValuesToList(input)
          #user_num_movies <- value_list$num_movies
         
+        res_ <- df2()
+        recom_result = res_$toplist
         
+        num_movies <- res_$num_movies
         
-        num_movies <- 5
-        
-        #if(num_movies <= 5){
+        if(num_movies <= 5){
             num_rows <- 1    
-        #}else if(num_movies == 10){
-        #    num_rows <- 2
+        }else if(num_movies == 10){
+            num_rows <- 2
             
-        #}
+        }
         
         
-        recom_result <- df2()
+        
         
         lapply(1:num_rows, function(i) {
             list(fluidRow(lapply(1:num_movies, function(j) {
