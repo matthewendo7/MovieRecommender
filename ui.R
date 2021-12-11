@@ -45,7 +45,7 @@ shinyUI(
         ),
         tabItem(tabName = "genre",
                 h3("Annual Marketing Costs"), 
-            actionButton("switchtab", "Look at Customer Retention"))
+            actionButton("switchtab", "Look at Customer Retention")
         )
       )
     )
