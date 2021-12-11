@@ -296,10 +296,7 @@ Some description on UBCF
 Some description on UBCF
 
 
-
 ** Our ShinyApp uses UBCF to recommend movies based on the user input **
-
-
 
 The the following section we build two models, IBCF and UBCF to evaluate accuracy on 10 random train/test samples
 
@@ -324,22 +321,33 @@ normalize = normalize(real_rating_matrix,method="Z-score")
 
 In the following code segment, we setup IBCF and UBCF, and evaluate the prediction accuracy on 10 sample runs
 
-< give the defition of each para >
+Key Paramters for IBCF
+
+- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
+- Distance Method(method): Cosine Similarity
+- k = 20. Number of similar products to identify(Number of latent attributes of dimension)
+
+Key Parameters for UBCF
+
+- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
+- Distance Method(method): Cosine Similarity
+- nn = 25, nn is the number of nearest neighbors
+- Weight = TRUE. By setting this parameter to TRUE, the average ratings are weighted according to their similarity
+
 
 ```{r}
-#defining an evaluation scheme with 80%
+
 ibcf_rmse = rep(0,10)
 ubcf_rmse = rep(0,10)
 
 for(i in 1:10){
+  #defining an evaluation scheme with 80%
   e <- evaluationScheme(real_rating_matrix[1:200], #JUST RUNNING A SAMPLE FOR NOW
                         method="split", 
                         train=0.8, 
                         given=15, 
                         goodRating=5,
                         )
-  
-  #building a recommender
   
   #Building a IBCF Recommender
   r1_ibcf <- Recommender(getData(e, "train"),
@@ -371,13 +379,9 @@ for(i in 1:10){
 ```
 
 ```{r}
-ibcf_rmse
+RMSE_summary = data.frame(Iteration = seq(1,10), IBCF_RMSE = ibcf_rmse, UBCF_RMSE = ubcf_rmse)
+RMSE_summary
 ```
-
-```{r}
-ubcf_rmse
-```
-
 
 Sources:
 
