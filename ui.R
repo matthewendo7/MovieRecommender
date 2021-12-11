@@ -7,6 +7,8 @@ library(ShinyRatingInput)
 library(shinyjs)
 
 source('functions/helpers.R')
+c = c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
+"Mystery","Romance","Sci-Fi","Thriller","War","Western")
 
 shinyUI(
     dashboardPage(
@@ -45,10 +47,9 @@ shinyUI(
                 ),
                 tabItem("genre",
                         fluidRow(
-                        numericInput("maxrows", "Rows to show", 25),
-                         selectInput("genre_input",
-                                      "Select a Movie Genre:",
-                                      c("A","B","C"))
+                            column(4, selectInput("genre_input", "Select a Movie Genre:",movie_genre_list)),
+                            column(4, selectInput("num_movies", "Number of Movies to Show:", c(3,5,10)))
+                            
                             )
                 )
             )
