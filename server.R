@@ -123,10 +123,10 @@ shinyServer(function(input, output, session) {
             # get the user's rating data
             user_genre <-  value_list$genre_input
             user_num_movies <- value_list$num_movies
-            print(user_genre)
-            print(user_num_movies)
+            #print(user_genre)
+            #print(user_num_movies)
             topmovies = top_n_most_popular(sys1_movie_data, user_genre,user_num_movies)
-            print(topmovies)
+            #print(topmovies)
             return(list(toplist = topmovies,num_movies = user_num_movies))
         }) # still busy
         
