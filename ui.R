@@ -44,7 +44,12 @@ shinyUI(
                           )
                 ),
                 tabItem("genre",
-                        numericInput("maxrows", "Rows to show", 25)
+                        fluidRow(
+                        numericInput("maxrows", "Rows to show", 25),
+                         selectInput("genre_input",
+                                      "Select a Movie Genre:",
+                                      c("A","B","C"))
+                            )
                 )
             )
         )
