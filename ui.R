@@ -49,8 +49,9 @@ shinyUI(
                                                   c("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
                             column(2,selectInput("num_movies", "Number of Movies to Show:", c(3,5,10))),
+                            column(2,
                             withBusyIndicatorUI(
-                            column(2,actionButton("btn_show_genre_results", "Show Movie Results")),
+                            actionButton("btn_show_genre_results", "Show Movie Results"))
                                 ),
                             column(6,),
                             tableOutput("results2")
