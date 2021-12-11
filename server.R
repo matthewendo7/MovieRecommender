@@ -158,8 +158,8 @@ shinyServer(function(input, output, session) {
     # display the recommendations for system1
     output$results2 <- renderUI({
         
-         value_list <- reactiveValuesToList(input)
-         user_num_movies <- value_list$num_movies
+         #value_list <- reactiveValuesToList(input)
+         #user_num_movies <- value_list$num_movies
         
         
         
