@@ -88,6 +88,10 @@ shinyServer(function(input, output, session) {
             value_list <- reactiveValuesToList(input)
             user_ratings <- get_user_ratings(value_list)
             
+            
+            print(user_ratings)
+            
+            
             # add user's ratings as first column to rating matrix
             rmat <- cbind(user_ratings, ratingmat)
             
