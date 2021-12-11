@@ -44,22 +44,11 @@ shinyUI(
                 )
         ),
         tabItem(tabName = "genre",
-                                fluidRow(
-                            column(2,selectInput("genre_input", "Select a Movie Genre:",
+
+                            selectInput("genre_input", "Select a Movie Genre:",
                                                   list("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
-                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
-                            column(2,selectInput("num_movies", "Number of Movies to Show:", list(3,5,10))),
-                            column(2,style='padding: 20px 0;',
-                            withBusyIndicatorUI(
-                            actionButton("btn_show_genre_results", "Show Movie Results"))
-                                ),
-                            column(6,)
-                            
-                            ),
-                        fluidRow(
-                            column(12,style='padding:15px;',
-                            tableOutput("results2"))
-                            )
+                                                     "Mystery","Romance","Sci-Fi","Thriller","War","Western")),
+                           
                
                
                )
