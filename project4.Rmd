@@ -1,6 +1,6 @@
 ---
 title: 'Project 4: Movie Recommendation'
-author: "Asiri Silva, Matthew Endo, Lowell Tyner"
+author: "Asiri Silva (wdsilva2@illinois.edu) , Matthew Endo (endo1@illinois.edu), Lowell Tyner (ltyner@illinois.edu)"
 output:
   html_document:
     df_print: paged
@@ -13,11 +13,18 @@ date: "12/10/2021"
 ---
 
 
-```{r, message = FALSE}
+Team Members:
+
+
+
+
+```{r}
 library(reshape2)
 library(recommenderlab)
 library(Matrix)
 ```
+
+
 
 ## Overview
 
@@ -145,7 +152,7 @@ Description of the variables:
 	* 19:  "unemployed"
 	* 20:  "writer"
 
-- Zip-Code: User Zip Code
+- Zip-Code: User ZipCode
 
 ```{r}
 head(users)
@@ -158,11 +165,11 @@ In System 1, we discuss potential approaches for recommending movies based on th
 
 ### Approach 1 - Most popular movies
 
-Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. Furthermore, We will only show a movie if there are at least 100 4 and 5 ratings to ensure sufficient number of users have rated the movie.
+Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. Furthermore, We will only show a movie if there are alteast 100 4 and 5 ratings to ensure sufficient number of users have rated the movie.
 
 
 ```{r}
-#implementation
+#implmentation
 
 # Data prep
 
@@ -184,13 +191,13 @@ movie_n_rating = merge(movie_45_rating_count, movies_sub,  on = "MovieID")
 
 #function to return top 5 movies
 top_n_most_popular <- function(movie_rating_df, genre, n = 5){
-  s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #at least 100 ratings
+  s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #alteast 100 ratings
   s$Genre = genre
   return(s[order(-s$rating_count),][1:n,c("Title","MovieID","Genre","rating_count")])
 }
 
 #write.csv(movie_n_rating,file = "/home/asiri/uiuc/psl/project4/movies_for_sys1.csv", row.names = FALSE)
-#saveRDS(movie_n_rating,file = "/home/asiri/uiuc/psl/project4/movies_for_sys1.rdata")
+saveRDS(movie_n_rating,file = "/home/asiri/uiuc/psl/project4/movies_for_sys1.rdata")
 #readr
 ```
 
@@ -215,7 +222,7 @@ It is clear that our approach return the movies with the highest number of revie
 
 ### Approach 2 - Highest Rated Movies
 
-Our approach 2 for System I considers showing movies with highest average rating for movies with at least 100 reviews. 
+Our approach 2 for System I considers showing movies with highest average rating for movies with atleast 100 reviews. 
 
 ```{r}
 #implmentation
@@ -245,7 +252,7 @@ movie_n_rating = merge(movie_rating_summary, movies_sub,  on = "MovieID")
 
 #function to return top 5 movies
 top_n_highest_rated <- function(movie_rating_df, genre, n = 5){
-  s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #at least 100 ratings
+  s = movie_rating_df[ (movie_rating_df[genre] == TRUE) & (movie_rating_df$rating_count > 100),] #alteast 100 ratings
   s$Genre = genre
   return(s[order(-s$avg_rating),][1:n,c("Title","Genre","avg_rating","rating_count")])
 }
@@ -273,7 +280,9 @@ For the Shiny application, we used the Approach 1 - the most popular movie appro
 
 ## System II
 
-Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.
+Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? Here we look at two different collaborative filtering methods - user based collaborative filtering (UBCF), and item based collaborative filtering (IBCF).
+
+In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.  UBCF and IBCF take different approaches using this user entered information to make a decision about what movies to recommend to the current user.
 
 Here we consider two approaches
 
@@ -289,11 +298,9 @@ The model-building step consists of calculating a similarity matrix containing a
 
 ### User-Based Collaborative Filtering(UBCF)
 
-Some description on UBCF
-Some description on UBCF
-Some description on UBCF
-Some description on UBCF
+User-based CF is a memory-based algorithm which tries to simulate word-of-mouth by analyzing rating data from many individuals. The assumption is that users with similar preferences will rate items similarly. Thsus missing ratings for a user can be predicted by first finding a neighborhood of similar users and then aggregate the ratings of these users to form a prediction.
 
+The neighborhood is defined in terms of similarity between users, either by taking a given number of most similar users (k nearest neighbors) or all users within a given similarity threshold. Popular similarity measures for UBCF are the Pearson correlation coefficient and the Cosine similarity. 
 
 ** Our ShinyApp uses UBCF to recommend movies based on the user input **
 
@@ -317,72 +324,87 @@ Rmat = new('realRatingMatrix', data = Rmat)
 
 In the following code segment, we setup IBCF and UBCF, and evaluate the prediction accuracy on 10 sample runs
 
-Key Parameters for IBCF
+Key Paramters of Evaluation Scheme
 
-- Normalization method(normalize): Z-score. Normalization method to remove the rating bias of rating matrices
+- method - Defines the evaluation method. We used cross-validation here.
+- train - fraction of data to be used as training. We used 80% of the data for training
+- k - number of folds for cross-validation. We used 10-fold cross validation
+- given - Single number of items given for evaluation or a vector of length of data giving the number of items given for each observation. We used 20 items.
+- goodRating - threshold at which ratings are considered good for evaluation. We considered 5.
+
+Key Paramters of IBCF Algorithm
+
+- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
 - Distance Method(method): Cosine Similarity
-- k = 20. Number of similar products to identify(Number of latent attributes of dimension)
+- k = 50. Number of similar products to identify(Number of latent attributes of dimension)
 
-Key Parameters for UBCF
+Key Parameters of UBCF Algorithm
 
-- Normalization method(normalize): Z-score. Normalization method to remove the rating bias of rating matrices
+- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
 - Distance Method(method): Cosine Similarity
-- nn = 25, nn is the number of nearest neighbors
-- Weight = TRUE. By setting this parameter to TRUE, the average ratings are weighted according to their similarity
+- nn = 50, nn is the number of nearest neighbors
+- Weight = FALSE. If this parameter is TRUE, the average ratings are weighted according to their similarity
 
 
 Handling NA Values in evaluation: The default in recommenderlab is to ignore NAs.
 
 
 ```{r}
+set.seed(10)
+num_of_cross_validation_samples = 10
 
-ibcf_rmse = rep(0,10)
-ubcf_rmse = rep(0,10)
-
-for(i in 1:10){
-  #defining an evaluation scheme with 80%
-  e <- evaluationScheme(Rmat[1:500], 
-                        method="split", 
-                        train=0.8, 
-                        given=20, 
-                        goodRating=5,
-                        )
-  
-  #Building a IBCF Recommender
-  r1_ibcf <- Recommender(getData(e, "train"),
-                         method = "IBCF",
-                        param=list(normalize="z-score",
-                                   method="cosine",
-                                   k = 100 
-                        )
-                         )
-  
-  #Building a UBCF Recommender
-  r2_ubcf <- Recommender(getData(e, "train"),
-                       method = "UBCF",
-                      param=list(normalize="z-score",
-                                 method="cosine",
-                                 nn = 100, 
-                                 weighted = TRUE
+e <- evaluationScheme(Rmat, 
+                      method="cross-validation", 
+                      train=0.8, 
+                      given=20, 
+                      goodRating=5,
+                      k = num_of_cross_validation_samples 
                       )
-                       )
-  #Evaluating accuracy IBCF
-  pred_ibcf <- predict(r1_ibcf, getData(e, "known"), type="ratings")
-  ibcf_rmse[i] = calcPredictionAccuracy(pred_ibcf, getData(e, "unknown"))[["RMSE"]]
-  print(ibcf_rmse)
-  #Evaluating accuracy UBCF
-  pred_ubcf <- predict(r2_ubcf, getData(e, "known"), type="ratings")
-  ubcf_rmse[i] = calcPredictionAccuracy(pred_ubcf, getData(e, "unknown"))[["RMSE"]]
-  print(ubcf_rmse)
-  
-  print(i)
+
+result_UBCF  = evaluate(e, 
+                   method = "UBCF", 
+                   type = "ratings",   
+                   param=list(normalize="z-score",
+                                 method="cosine",
+                                 nn = 50, 
+                                 weighted = FALSE
+                      ))
+
+result_IBCF  = evaluate(e, 
+                   method = "IBCF", 
+                   type = "ratings",   
+                   param=list(normalize="z-score",
+                             method="cosine",
+                             k = 50 
+                  ))
+```
+
+
+Generating Evaluation Summary
+
+```{r}
+ubcf_rmse = rep(0,num_of_cross_validation_samples)
+ibcf_rmse = rep(0,num_of_cross_validation_samples)
+for(i in 1:num_of_cross_validation_samples){
+  ubcf_rmse[i] = getConfusionMatrix(result_UBCF)[[i]][[1,'RMSE']] 
+  ibcf_rmse[i] = getConfusionMatrix(result_IBCF)[[i]][[1,'RMSE']]
 }
+RMSE_summary = data.frame(Iteration = seq(1,num_of_cross_validation_samples), IBCF_RMSE = ibcf_rmse, UBCF_RMSE = ubcf_rmse)
+RMSE_summary
 ```
 
 ```{r}
-RMSE_summary = data.frame(Iteration = seq(1,10), IBCF_RMSE = ibcf_rmse, UBCF_RMSE = ubcf_rmse)
-RMSE_summary
+#AVG RMRSE for IBCF
+avg(result_IBCF)[1,'RMSE']
 ```
+
+```{r}
+#AVG RMRSE for UBCF
+avg(result_UBCF)[1,'RMSE']
+```
+
+Based on the parameters used in the above simulation, UBCF seems to perform better compared to IBCF
+
 
 Sources:
 
