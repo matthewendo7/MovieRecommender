@@ -77,7 +77,7 @@ shinyServer(function(input, output, session) {
     })
     
     # Calculate recommendations when the sbumbutton is clicked
-    df <- eventReactive(input$btn, {
+    df <- eventReactive(input$btn, ignoreInit = T, {
         withBusyIndicatorServer("btn", { # showing the busy indicator
             # hide the rating container
             useShinyjs()
@@ -122,7 +122,7 @@ shinyServer(function(input, output, session) {
    
     
     # Calculate recommendations when the sbumbutton is clicked: System I
-    df2 <- eventReactive(input$btn_show_genre_results, {
+    df2 <- eventReactive(input$btn_show_genre_results,ignoreInit = T, {
         withBusyIndicatorServer("btn_show_genre_results", { # showing the busy indicator
            
             value_list <- reactiveValuesToList(input)
