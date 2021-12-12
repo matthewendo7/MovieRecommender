@@ -13,12 +13,7 @@ date: "12/10/2021"
 ---
 
 
-Team Members:
-
-
-
-
-```{r}
+```{r, message = FALSE}
 library(reshape2)
 library(recommenderlab)
 library(Matrix)
@@ -152,7 +147,7 @@ Description of the variables:
 	* 19:  "unemployed"
 	* 20:  "writer"
 
-- Zip-Code: User ZipCode
+- Zip-Code: User Zip Code
 
 ```{r}
 head(users)
@@ -165,11 +160,11 @@ In System 1, we discuss potential approaches for recommending movies based on th
 
 ### Approach 1 - Most popular movies
 
-Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. Furthermore, We will only show a movie if there are alteast 100 4 and 5 ratings to ensure sufficient number of users have rated the movie.
+Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. Furthermore, We will only show a movie if there are at least 100 4 and 5 ratings to ensure sufficient number of users have rated the movie.
 
 
 ```{r}
-#implmentation
+#implementation
 
 # Data prep
 
@@ -222,7 +217,7 @@ It is clear that our approach return the movies with the highest number of revie
 
 ### Approach 2 - Highest Rated Movies
 
-Our approach 2 for System I considers showing movies with highest average rating for movies with atleast 100 reviews. 
+Our approach 2 for System I considers showing movies with highest average rating for movies with at least 100 reviews. 
 
 ```{r}
 #implmentation
@@ -280,9 +275,7 @@ For the Shiny application, we used the Approach 1 - the most popular movie appro
 
 ## System II
 
-Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? Here we look at two different collaborative filtering methods - user based collaborative filtering (UBCF), and item based collaborative filtering (IBCF).
-
-In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.  UBCF and IBCF take different approaches using this user entered information to make a decision about what movies to recommend to the current user.
+Collaborative filtering is a way to answer the question - will a specific user like a specific item (movie, in this case)? In our System II, the only information we have about the current user is the ratings for various movies that we ask the user to input.
 
 Here we consider two approaches
 
@@ -298,7 +291,7 @@ The model-building step consists of calculating a similarity matrix containing a
 
 ### User-Based Collaborative Filtering(UBCF)
 
-User-based CF is a memory-based algorithm which tries to simulate word-of-mouth by analyzing rating data from many individuals. The assumption is that users with similar preferences will rate items similarly. Thsus missing ratings for a user can be predicted by first finding a neighborhood of similar users and then aggregate the ratings of these users to form a prediction.
+User-based CF is a memory-based algorithm which tries to simulate word-of-mouth by analyzing rating data from many individuals. The assumption is that users with similar preferences will rate items similarly. Thus missing ratings for a user can be predicted by first finding a neighborhood of similar users and then aggregate the ratings of these users to form a prediction.
 
 The neighborhood is defined in terms of similarity between users, either by taking a given number of most similar users (k nearest neighbors) or all users within a given similarity threshold. Popular similarity measures for UBCF are the Pearson correlation coefficient and the Cosine similarity. 
 
@@ -324,7 +317,7 @@ Rmat = new('realRatingMatrix', data = Rmat)
 
 In the following code segment, we setup IBCF and UBCF, and evaluate the prediction accuracy on 10 sample runs
 
-Key Paramters of Evaluation Scheme
+Key Parameters of Evaluation Scheme
 
 - method - Defines the evaluation method. We used cross-validation here.
 - train - fraction of data to be used as training. We used 80% of the data for training
@@ -332,15 +325,15 @@ Key Paramters of Evaluation Scheme
 - given - Single number of items given for evaluation or a vector of length of data giving the number of items given for each observation. We used 20 items.
 - goodRating - threshold at which ratings are considered good for evaluation. We considered 5.
 
-Key Paramters of IBCF Algorithm
+Key Parameters of IBCF Algorithm
 
-- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
+- Normalization method(normalize): Z-score. Normalization method to remove the rating bias of rating matrices
 - Distance Method(method): Cosine Similarity
 - k = 50. Number of similar products to identify(Number of latent attributes of dimension)
 
 Key Parameters of UBCF Algorithm
 
-- Normlization method(normalize):- Z-score. Normalization method to remove the rating bias of rating matrices
+- Normalization method(normalize): Z-score. Normalization method to remove the rating bias of rating matrices
 - Distance Method(method): Cosine Similarity
 - nn = 50, nn is the number of nearest neighbors
 - Weight = FALSE. If this parameter is TRUE, the average ratings are weighted according to their similarity
