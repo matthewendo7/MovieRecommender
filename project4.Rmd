@@ -16,6 +16,7 @@ date: "12/10/2021"
 ```{r}
 library(reshape2)
 library(recommenderlab)
+library(Matrix)
 ```
 
 ## Overview
@@ -157,7 +158,7 @@ In System 1, we discuss potential approaches for recommending movies based on th
 
 ### Approach 1 - Most popular movies
 
-Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. We will only show a movie if there are alteast 100, 4 and 5 ratings to ensure sufficient number of users have rated the movie
+Our first approach is to display the user with the most popular movies for a given genre. We define most popular as the movies with the most number of 4 and 5 ratings. Our thinking behind choosing 4,5 is that it will result in good movies, and also, taking the number of ratings, we will factor in the popularity of the movie as well. Furthermore, We will only show a movie if there are alteast 100 4 and 5 ratings to ensure sufficient number of users have rated the movie.
 
 
 ```{r}
@@ -306,17 +307,14 @@ We will use the rating dataset, follows the steps mentioned in the `recommenderl
 #dataset setup
 
 #creating a rating matrix
-rating_matrix = as.matrix(dcast(ratings, UserID ~ MovieID, value.var = "Rating"))
-
-#let's conver the matrix to the realRatingMatrix
-real_rating_matrix =  as(rating_matrix, "realRatingMatrix")
-```
-
-It is important to remove the rating bias for rating matrices. We use `normalize()` to achieve this.
-We will use Z-score normalization
-
-```{r}
-normalize = normalize(real_rating_matrix,method="Z-score")
+i = paste0('u', ratings$UserID)
+j = paste0('m', ratings$MovieID)
+x = ratings$Rating
+tmp = data.frame(i, j, x, stringsAsFactors = T)
+Rmat = sparseMatrix(as.integer(tmp$i), as.integer(tmp$j), x = tmp$x)
+rownames(Rmat) = levels(tmp$i)
+colnames(Rmat) = levels(tmp$j)
+Rmat = new('realRatingMatrix', data = Rmat)
 ```
 
 In the following code segment, we setup IBCF and UBCF, and evaluate the prediction accuracy on 10 sample runs
@@ -335,6 +333,9 @@ Key Parameters for UBCF
 - Weight = TRUE. By setting this parameter to TRUE, the average ratings are weighted according to their similarity
 
 
+Handling NA Values in evaluation: The default in recommenderlab is to ignore NAs.
+
+
 ```{r}
 
 ibcf_rmse = rep(0,10)
@@ -342,40 +343,41 @@ ubcf_rmse = rep(0,10)
 
 for(i in 1:10){
   #defining an evaluation scheme with 80%
-  e <- evaluationScheme(real_rating_matrix[1:200], #JUST RUNNING A SAMPLE FOR NOW
+  e <- evaluationScheme(Rmat[1:500], 
                         method="split", 
                         train=0.8, 
-                        given=15, 
+                        given=20, 
                         goodRating=5,
                         )
   
   #Building a IBCF Recommender
   r1_ibcf <- Recommender(getData(e, "train"),
                          method = "IBCF",
-                        param=list(normalize="Z-score",
+                        param=list(normalize="z-score",
                                    method="cosine",
-                                   k = 30 #number of nearest neighbors
+                                   k = 100 
                         )
                          )
   
   #Building a UBCF Recommender
   r2_ubcf <- Recommender(getData(e, "train"),
                        method = "UBCF",
-                      param=list(normalize="Z-score",
+                      param=list(normalize="z-score",
                                  method="cosine",
-                                 nn = 25, #number of nearest neighbors ??
+                                 nn = 100, 
                                  weighted = TRUE
                       )
                        )
   #Evaluating accuracy IBCF
   pred_ibcf <- predict(r1_ibcf, getData(e, "known"), type="ratings")
   ibcf_rmse[i] = calcPredictionAccuracy(pred_ibcf, getData(e, "unknown"))[["RMSE"]]
-  
+  print(ibcf_rmse)
   #Evaluating accuracy UBCF
   pred_ubcf <- predict(r2_ubcf, getData(e, "known"), type="ratings")
   ubcf_rmse[i] = calcPredictionAccuracy(pred_ubcf, getData(e, "unknown"))[["RMSE"]]
+  print(ubcf_rmse)
   
-  
+  print(i)
 }
 ```
 
