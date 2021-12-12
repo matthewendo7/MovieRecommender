@@ -105,7 +105,10 @@ shinyServer(function(input, output, session) {
             
             # sort, organize, and return the results
             user_results <- sort(res[, 1], decreasing = TRUE)[1:10]
-            user_predicted_ids <- as.numeric(names(user_results))
+            user_predicted_ids = c()
+            for(i in 1:length(user_results)){
+                user_predicted_ids <- append(user_predicted_ids, which(movies$MovieID == as.numeric(names(user_results[i]))))
+            }
             recom_results <- data.table(Rank = 1:10, 
                                         MovieID = movies$MovieID[user_predicted_ids], 
                                         Title = movies$Title[user_predicted_ids], 
