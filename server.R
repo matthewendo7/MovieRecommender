@@ -93,7 +93,7 @@ shinyServer(function(input, output, session) {
             
             print(value_list)
             print(user_ratings)
-            
+            print("sys2 pass printing")
             
             # add user's ratings as first column to rating matrix
             rmat <- cbind(user_ratings, ratingmat)
