@@ -91,7 +91,7 @@ shinyServer(function(input, output, session) {
             value_list <- reactiveValuesToList(input)
             user_ratings <- get_user_ratings(value_list)
             
-            
+            print(value_list)
             print(user_ratings)
             
             
