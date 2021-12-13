@@ -1,4 +1,3 @@
-## server.R
 
 # load functions
 source('functions/cf_algorithm.R') # collaborative filtering
@@ -89,7 +88,7 @@ shinyServer(function(input, output, session) {
             user_ratings <- get_user_ratings(value_list)
             
             
-            print(user_ratings)
+            #print(user_ratings)
             
             
             # add user's ratings as first column to rating matrix
@@ -158,7 +157,7 @@ shinyServer(function(input, output, session) {
         num_rows <- 2
         num_movies <- 5
         recom_result <- df()
-        print(recom_result)
+        #print(recom_result)
         lapply(1:num_rows, function(i) {
             list(fluidRow(lapply(1:num_movies, function(j) {
                 c_movie_id = which(movies$MovieID == recom_result$MovieID[(i - 1) * num_movies + j])
