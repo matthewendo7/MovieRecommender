@@ -14,8 +14,8 @@ shinyUI(
         dashboardHeader(title = "Movie Recommender"),
         dashboardSidebar(
             sidebarMenu(
-                menuItem("Movie Recommend", tabName = "movieRecommend"),
-                menuItem("Popular Movies by Genre", tabName = "genre")
+                menuItem("Recommender by Rating", tabName = "movieRecommend"),
+                menuItem("Recommender by Genre", tabName = "genre")
             )
         ),
         dashboardBody(
@@ -45,13 +45,13 @@ shinyUI(
                 ),
                 tabItem("genre",
                         fluidRow(
-                            column(2,selectInput("genre_input", "Select a Movie Genre:",
+                            column(2,selectInput("genreinput", "Select a Movie Genre:",
                                                   list("Action","Adventure","Animation","Children's","Comedy","Crime","Documentary","Drama","Fantasy","Film-Noir","Horror","Musical",
                                                      "Mystery","Romance","Sci-Fi","Thriller","War","Western"))),
-                            column(2,selectInput("num_movies", "Number of Movies to Show:", list("Top 3","Top 5","Top 10"))),
+                            column(2,selectInput("nummovies", "Number of Movies to Show:", list("Top 3","Top 5","Top 10"))),
                             column(2,style='padding: 20px 0;',
                             withBusyIndicatorUI(
-                            actionButton("btn_show_genre_results", "Show Movie Results"))
+                            actionButton("btnshowgenreresults", "Show Movie Results"))
                                 ),
                             column(6,)
                             
