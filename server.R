@@ -122,14 +122,14 @@ shinyServer(function(input, output, session) {
    
     
     # Calculate recommendations when the sbumbutton is clicked: System I
-    df2 <- eventReactive(input$btn_show_genre_results, {
+    df2 <- eventReactive(input$btnshowgenreresults, {
         withBusyIndicatorServer("btn_show_genre_results", { # showing the busy indicator
            
             value_list <- reactiveValuesToList(input)
             
             # get the user's rating data
-            user_genre <-  value_list$genre_input
-            user_num_movies_str <- value_list$num_movies
+            user_genre <-  value_list$genreinput
+            user_num_movies_str <- value_list$nummovies
             
             if(user_num_movies_str == "Top 3"){
                user_num_movies = 3
