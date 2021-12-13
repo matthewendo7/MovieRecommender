@@ -79,6 +79,9 @@ shinyServer(function(input, output, session) {
     # Calculate recommendations when the sbumbutton is clicked
     df <- eventReactive(input$btn, ignoreInit = T, {
         withBusyIndicatorServer("btn", { # showing the busy indicator
+            
+            print("sys2 button was clicked")
+            
             # hide the rating container
             useShinyjs()
             jsCode <- "document.querySelector('[data-widget=collapse]').click();"
