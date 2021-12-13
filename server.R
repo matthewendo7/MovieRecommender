@@ -88,11 +88,11 @@ shinyServer(function(input, output, session) {
             runjs(jsCode)
             
             # get the user's rating data
-            value_list <- reactiveValuesToList(input)
-            user_ratings <- get_user_ratings(value_list)
+            #value_list <- reactiveValuesToList(input)
+            #user_ratings <- get_user_ratings(value_list)
             
-            print(value_list)
-            print(user_ratings)
+            #print(value_list)
+            #print(user_ratings)
             print("sys2 pass printing")
             
             # add user's ratings as first column to rating matrix
